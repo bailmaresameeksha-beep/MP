@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Test - Gate Master AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/public/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Same navbar -->
+    
+    <div class="container mt-5 pt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow">
+                    <div class="card-header bg-danger text-white text-center">
+                        <h3><i class="fas fa-clock"></i> GATE Mock Test</h3>
+                        <p class="mb-0">Full-length test with negative marking (-1/3 per wrong answer)</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="testSetup">
+                            <div class="row g-4 mb-5">
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">Test Duration</label>
+                                    <select class="form-control" id="duration">
+                                        <option value="60">1 Hour</option>
+                                        <option value="120">2 Hours</option>
+                                        <option value="180">3 Hours (Full GATE)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">Subjects</label>
+                                    <select class="form-control" id="subjects" multiple>
+                                        <option>Engineering Mathematics</option>
+                                        <option>General Aptitude</option>
+                                        <option>Technical Subject 1</option>
+                                        <option>Technical Subject 2</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold">Question Type</label>
+                                    <select class="form-control" id="questionType">
+                                        <option>All MCQs</option>
+                                        <option>Weak Topics Only</option>
+                                        <option>High Difficulty</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 d-flex align-items-end">
+                                    <button class="btn btn-danger w-100 btn-modern h-100" onclick="startMockTest()">
+                                        <i class="fas fa-rocket"></i> Start Test
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="testInterface" style="display:none;">
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="h3" id="testTimer">180:00</div>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <span class="h4">Question <span id="currentQuestionNum">1</span> of <span id="totalTestQuestions">65</span></span>
+                                </div>
+                            </div>
+
+                            <div class="progress mb-4" style="height: 8px;">
+                                <div class="progress-bar bg-danger" id="testProgress" style="width: 0%"></div>
+                            </div>
+
+                            <div id="testQuestions"></div>
+
+                            <div class="row mt-5">
+                                <div class="col-md-6">
+                                    <button class="btn btn-outline-secondary btn-lg w-100 me-2" onclick="prevTestQuestion()">
+                                        Previous
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-danger btn-lg w-100" onclick="submitTest()" id="endTestBtn">
+                                        End Test
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="testResults" style="display:none;">
+                            <div class="text-center py-5">
+                                <i class="fas fa-award fa-5x text-warning mb-4"></i>
+                                <h2 id="testScore">Score: Calculating...</h2>
+                                <div class="row justify-content-center">
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-body text-center">
+                                                <h4 id="testCorrect">0</h4>
+                                                <p>Correct</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-body text-center">
+                                                <h4 id="testWrong">0</h4>
+                                                <p>Incorrect</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-body text-center">
+                                                <h4 id="testPercent">0%</h4>
+                                                <p>Accuracy</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-lg btn-modern mt-4" onclick="restartTest()">
+                                    Take Another Test
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/public/js/mocktest.js"></script>
+    <script src="/public/js/main.js"></script>
+</body>
+</html>

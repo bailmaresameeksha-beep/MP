@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gate Master AI - AI-Powered GATE Preparation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/public/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-brain text-warning"></i> Gate Master AI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/public/index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/public/quiz.html">Quiz</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/public/upload.html">Upload PDF</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/public/flashcards.html">Flashcards</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/public/dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/public/mocktest.html">Mock Test</a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="dropdown" id="userDropdown" style="display: none;">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="logout()">Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <button id="authBtn" class="btn btn-outline-light ms-2" onclick="toggleAuth()">Login / Register</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section pt-5 mt-5">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-4">Master GATE with AI</h1>
+            <p class="lead mb-5">Your personal AI tutor that adapts to your mistakes and ensures 100% mastery</p>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-3">
+                    <div class="card h-100 shadow">
+                        <div class="card-body text-center">
+                            <i class="fas fa-magic fa-3x text-primary mb-3"></i>
+                            <h5>AI Quiz Generator</h5>
+                            <p>Topic-based questions with detailed explanations</p>
+                            <a href="/public/quiz.html" class="btn btn-primary mt-2">Try Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card h-100 shadow">
+                        <div class="card-body text-center">
+                            <i class="fas fa-book fa-3x text-success mb-3"></i>
+                            <h5>PDF Processor</h5>
+                            <p>Upload notes → Get quizzes + summaries instantly</p>
+                            <a href="/public/upload.html" class="btn btn-success mt-2">Upload PDF</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card h-100 shadow">
+                        <div class="card-body text-center">
+                            <i class="fas fa-exchange-alt fa-3x text-warning mb-3"></i>
+                            <h5>Smart Flashcards</h5>
+                            <p>Auto-generated from your mistakes with spaced repetition</p>
+                            <a href="/public/flashcards.html" class="btn btn-warning mt-2">Review Cards</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card h-100 shadow">
+                        <div class="card-body text-center">
+                            <i class="fas fa-chart-line fa-3x text-info mb-3"></i>
+                            <h5>Analytics</h5>
+                            <p>Track weak topics and mastery level</p>
+                            <a href="/public/dashboard.html" class="btn btn-info mt-2">View Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5">
+                <button class="btn btn-lg btn-primary me-3" onclick="window.location.href='/public/quiz.html'">Start Quiz Now</button>
+                <button class="btn btn-lg btn-outline-primary" onclick="showDemo()">Demo Features</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Login/Register Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="authTitle">Login to Continue</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <ul class="nav nav-tabs" id="authTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button">Login</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button">Register</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3" id="authTabContent">
+                        <div class="tab-pane fade show active" id="login" role="tabpanel">
+                            <form id="loginForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="loginEmail" placeholder="test@test.com" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="loginPassword" placeholder="123456" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Login</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="register" role="tabpanel">
+                            <form id="registerForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="regName" placeholder="John Doe" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="regEmail" placeholder="test@test.com" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="regPassword" required>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Complete working JS
+        let token = localStorage.getItem('token');
+        let user = JSON.parse(localStorage.getItem('user') || '{}');
+
+        function updateAuthUI() {
+            const authBtn = document.getElementById('authBtn');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            if (token) {
+                authBtn.textContent = 'Dashboard';
+                authBtn.className = 'btn btn-warning ms-2';
+                authBtn.onclick = () => window.location.href = '/public/dashboard.html';
+                userDropdown.style.display = 'block';
+            } else {
+                authBtn.textContent = 'Login / Register';
+                authBtn.className = 'btn btn-outline-light ms-2';
+                authBtn.onclick = toggleAuth;
+                userDropdown.style.display = 'none';
+            }
+        }
+
+        async function apiRequest(url, options = {}) {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token && { Authorization: `Bearer ${token}` })
+                },
+                ...options
+            };
+            
+            const response = await fetch(url, config);
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'API Error');
+            }
+            return response.json();
+        }
+
+        function toggleAuth() {
+            new bootstrap.Modal(document.getElementById('authModal')).show();
+        }
+
+        async function login(email, password) {
+            try {
+                const data = await apiRequest('/api/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({email, password})
+                });
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                token = data.token;
+                user = data.user;
+                updateAuthUI();
+                bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
+                alert('Login Success!');
+            } catch (error) {
+                alert('Login failed: ' + error.message);
+            }
+        }
+
+        async function register(name, email, password) {
+            try {
+                const data = await apiRequest('/api/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify({name, email, password})
+                });
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                token = data.token;
+                user = data.user;
+                updateAuthUI();
+                bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
+                alert('Registration Success!');
+            } catch (error) {
+                alert('Registration failed: ' + error.message);
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            token = null;
+            user = {};
+            updateAuthUI();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAuthUI();
+            
+            // Login form
+            document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                login(email, password);
+            });
+
+            // Register form
+            document.getElementById('registerForm')?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('regName').value;
+                const email = document.getElementById('regEmail').value;
+                const password = document.getElementById('regPassword').value;
+                register(name, email, password);
+            });
+        });
+    </script>
+</body>
+</html>

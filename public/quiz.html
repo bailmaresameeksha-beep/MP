@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Quiz - Gate Master AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/public/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Nav bar same as index -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <!-- Same navbar as index.html -->
+    </nav>
+
+    <div class="container mt-5 pt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h3><i class="fas fa-graduation-cap"></i> AI Quiz Generator</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="quizForm" class="mb-5">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">Topic</label>
+                                    <input type="text" class="form-control" id="topic" placeholder="e.g., Thermodynamics, Digital Logic">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Number of Questions</label>
+                                    <select class="form-control" id="numQuestions">
+                                        <option>5</option>
+                                        <option>10</option>
+                                        <option>15</option>
+                                        <option>20</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Difficulty</label>
+                                    <select class="form-control" id="difficulty">
+                                        <option>easy</option>
+                                        <option>medium</option>
+                                        <option>hard</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button class="btn btn-primary w-100 btn-modern" onclick="generateQuiz()">
+                                        <i class="fas fa-magic"></i> Generate Quiz
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="quizContainer" style="display:none;">
+                            <div class="d-flex justify-content-between mb-4">
+                                <div id="questionCounter" class="h3"></div>
+                                <div class="timer h3" id="timer">30:00</div>
+                            </div>
+                            
+                            <div id="questions"></div>
+                            
+                            <div class="text-center mt-5">
+                                <button class="btn btn-success btn-lg btn-modern me-3" onclick="submitQuiz()">
+                                    <i class="fas fa-paper-plane"></i> Submit Quiz
+                                </button>
+                                <button class="btn btn-secondary btn-lg btn-modern" onclick="nextQuestion()">
+                                    Next Question
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="results" style="display:none;" class="mt-5">
+                            <div class="text-center">
+                                <i class="fas fa-trophy fa-5x text-success mb-4"></i>
+                                <h2 id="scoreText"></h2>
+                                <p id="accuracyText"></p>
+                                <button class="btn btn-primary btn-lg btn-modern" onclick="generateNewQuiz()">
+                                    New Quiz
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/public/js/quiz.js"></script>
+    <script src="/public/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>GATE MASTER AI - 100% WORKING</title>
+<meta name="viewport" content="width=device-width">
+<style>
+body { font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px; }
+input, button { padding: 12px; margin: 10px 0; width: 100%; font-size: 16px; }
+button { background: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px; }
+.success { background: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin: 10px 0; }
+.error { background: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin: 10px 0; }
+#app { border: 1px solid #ddd; padding: 20px; border-radius: 10px; }
+h1 { color: #007bff; text-align: center; }
+.quiz-item { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 5px; }
+</style>
+</head>
+<body>
+<div id="app">
+<h1>🚀 GATE Master AI</h1>
+<div id="status">Ready - Click Login</div>
+
+<h3>Login/Register</h3>
+<input id="email" placeholder="Email (test@test.com)" value="test@test.com">
+<input id="pass" type="password" placeholder="Password (123456)" value="123456">
+<button onclick="login()">LOGIN</button>
+<button onclick="register()">REGISTER</button>
+<div id="message"></div>
+
+<div id="quiz-section" style="display:none">
+<h3>AI Quiz Generator</h3>
+<input id="topic" placeholder="Topic: Digital Logic" value="Digital Logic">
+<button onclick="generateQuiz()">Generate Quiz</button>
+<div id="quiz-output"></div>
+</div>
+</div>
+
+<script>
+let token = localStorage.getItem('token') || '';
+
+if (token) {
+  document.getElementById('quiz-section').style.display = 'block';
+  document.getElementById('status').innerHTML = 'Logged in - Ready for Quiz!';
+}
+
+async function login() {
+  const email = document.getElementById('email').value;
+  const pass = document.getElementById('pass').value;
+  
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email, pass})
+    });
+    
+    const data = await res.json();
+    
+    if (res.ok) {
+      token = data.token;
+      localStorage.setItem('token', token);
+      document.getElementById('message').innerHTML = '<div class="success">LOGIN SUCCESS! Quiz unlocked!</div>';
+      document.getElementById('quiz-section').style.display = 'block';
+      document.getElementById('status').innerHTML = 'Quiz Ready!';
+    } else {
+      document.getElementById('message').innerHTML = '<div class="error">' + data.message + '</div>';
+    }
+  } catch (e) {
+    document.getElementById('message').innerHTML = '<div class="error">Server error - is node server running?</div>';
+  }
+}
+
+async function register() {
+  const name = 'Test User';
+  const email = document.getElementById('email').value;
+  const pass = document.getElementById('pass').value;
+  
+  try {
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({name, email, pass})
+    });
+    
+    const data = await res.json();
+    
+    if (res.ok) {
+      document.getElementById('message').innerHTML = '<div class="success">' + data.message + '</div>';
+    } else {
+      document.getElementById('message').innerHTML = '<div class="error">' + data.message + '</div>';
+    }
+  } catch (e) {
+    document.getElementById('message').innerHTML = '<div class="error">Server error</div>';
+  }
+}
+
+async function generateQuiz() {
+  const topic = document.getElementById('topic').value;
+  
+  try {
+    const res = await fetch('/api/quiz/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({topic, numQuestions: 5, difficulty: 'medium'})
+    });
+    
+    const data = await res.json();
+    
+    if (res.ok) {
+      document.getElementById('quiz-output').innerHTML = `
+        <div class="success">Quiz Generated! ${data.quiz.questions.length} questions</div>
+        ${data.quiz.questions.map((q, i) => `
+          <div class="quiz-item">
+            <strong>Q${i+1}:</strong> ${q.question}
+            <br><small>${q.options.map(o => o.text).join(', ')}</small>
+          </div>
+        `).join('')}
+      `;
+    } else {
+      document.getElementById('quiz-output').innerHTML = '<div class="error">' + data.message + '</div>';
+    }
+  } catch (e) {
+    document.getElementById('quiz-output').innerHTML = '<div class="error">Quiz error: ' + e.message + '</div>';
+  }
+}
+</script>
+</body>
+</html>

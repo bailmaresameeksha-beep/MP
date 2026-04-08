@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>GATE AI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<style>
+body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
+input, button { width: 100%; padding: 12px; margin: 10px 0; box-sizing: border-box; }
+button { background: #007bff; color: white; border: none; cursor: pointer; }
+.success { background: #d4edda; color: #155724; padding: 10px; margin: 10px 0; }
+.error { background: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; }
+#quiz { display: none; }
+</style>
+</head>
+<body>
+<h1>GATE Master AI</h1>
+
+<h3>Login/Register</h3>
+<input id="email" placeholder="Email" value="test@test.com">
+<input id="pass" type="password" placeholder="Password" value="123456">
+<button onclick="login()">LOGIN</button>
+<button onclick="register()">REGISTER</button>
+<div id="msg"></div>
+
+<div id="quiz">
+<h3>AI Quiz</h3>
+<input id="topic" placeholder="Topic" value="Digital Logic">
+<button onclick="quiz()">Generate Quiz</button>
+<div id="result"></div>
+</div>
+
+<script>
+async function register() {
+  const email = document.getElementById('email').value;
+  const pass = document.getElementById('pass').value;
+  try {
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({name: 'Test', email, password: pass})
+    });
+    const data = await res.json();
+    document.getElementById('msg').innerHTML = data.message.includes('success') ? '<div class="success">' + data.message + '</div>' : '<div class="error">' + data.message + '</div>';
+  } catch(e) {
+    document.getElementById('msg').innerHTML = '<div class="error">' + e + '</div>';
+  }
+}
+
+async function login() {
+  const email = document.getElementById('email').value;
+  const pass = document.getElementById('pass').value;
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email, password: pass})
+    });
+    const data = await res.json();
+    if (data.token) {
+      localStorage.token = data.token;
+      document.getElementById('msg').innerHTML = '<div class="success">LOGIN SUCCESS! Quiz ready!</div>';
+      document.getElementById('quiz').style.display = 'block';
+    } else {
+      document.getElementById('msg').innerHTML = '<div class="error">' + data.message + '</div>';
+    }
+  } catch(e) {
+    document.getElementById('msg').innerHTML = '<div class="error">' + e + '</div>';
+  }
+}
+
+async function quiz() {
+  const token = localStorage.token;
+  if (!token) return document.getElementById('msg').innerHTML = '<div class="error">Login first</div>';
+  
+  const topic = document.getElementById('topic').value;
+  try {
+    const res = await fetch('/api/quiz/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({topic, numQuestions: 5})
+    });
+    const data = await res.json();
+    document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+  } catch(e) {
+    document.getElementById('result').innerHTML = '<pre>Error: ' + e + '</pre>';
+  }
+}
+</script>
+</body>
+</html>
+

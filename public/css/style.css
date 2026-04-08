@@ -1,0 +1,147 @@
+:root {
+  --primary-color: #0d6efd;
+  --dark-bg: #1a1a2e;
+  --dark-card: #16213e;
+  --light-bg: #f8f9fa;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  transition: all 0.3s ease;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 15px;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
+}
+
+.flashcard {
+  perspective: 1000px;
+  height: 200px;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front, .flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.flashcard-front {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.flashcard-back {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.quiz-question {
+  min-height: 300px;
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.option-btn {
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.option-btn:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.option-btn.correct {
+  background: #d4edda !important;
+  border-color: #28a745 !important;
+}
+
+.option-btn.incorrect {
+  background: #f8d7da !important;
+  border-color: #dc3545 !important;
+}
+
+.timer {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #dc3545;
+}
+
+.progress-bar {
+  height: 8px;
+  border-radius: 10px;
+}
+
+.dark-mode {
+  background-color: var(--dark-bg);
+  color: white;
+}
+
+.dark-mode .card {
+  background-color: var(--dark-card);
+  color: white;
+}
+
+.dark-mode .quiz-question {
+  background-color: var(--dark-card);
+  color: white;
+}
+
+.btn-modern {
+  border-radius: 25px;
+  padding: 12px 30px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
+}
