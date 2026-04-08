@@ -1,0 +1,4 @@
+MONGODB_URI=mongodb://localhost:27017/gatemasterai
+PORT=5000
+JWT_SECRET=supersecretgatetoken2024changeinproduction
+OPENAI_API_KEY=dummykeynotneededforbasicdemo
